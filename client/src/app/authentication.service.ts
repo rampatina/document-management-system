@@ -25,7 +25,29 @@ export interface TokenPayload {
 export interface DocumentsDetails {
   _id: string;
   name: string;
+  content: string;
   created: Date;
+  folderid: Object;
+  userid: Object;
+}
+
+export interface FolderDetails {
+  _id: string;
+  name: string;
+  created: Date;
+  userid: Object;
+}
+
+export interface DocumentPayload {
+  name: String;
+  content: String;
+  folderid?: String;
+  userid?: String;
+}
+
+export interface FolderPayload {
+  name: String;
+  userid: String;
 }
 
 @Injectable()
@@ -88,6 +110,32 @@ export class AuthenticationService {
     return request;
   }
 
+  private requestDocs(method: 'post'|'get', type: 'documents' | 'adddoc', document?: DocumentPayload): Observable<any> {
+    let response;
+    console.log('requestDocs called' + method + 'type ' + type);
+    console.log(document);
+    if (method === 'post') {
+      response = this.http.post(`/api/${type}`, document, { headers: { Authorization: `Bearer ${this.getToken()}`, 'Content-Type': 'application/json' }});
+    } else {
+      response = this.http.get(`/api/${type}`, { headers: { Authorization: `Bearer ${this.getToken()}` }});
+    }
+    //console.log(response);
+    return response;
+  }
+
+  private requestFolder(method: 'post'|'get', type: 'folders' | 'addfolder', folder?: FolderPayload): Observable<any> {
+    let response;
+    console.log('requestDocs called' + method + ' type ' + type);
+    console.log(folder);
+    if (method === 'post') {
+      response = this.http.post(`/api/${type}`, folder, { headers: { Authorization: `Bearer ${this.getToken()}`, 'Content-Type': 'application/json' }});
+    } else {
+      response = this.http.get(`/api/${type}`, { headers: { Authorization: `Bearer ${this.getToken()}` }});
+    }
+    //console.log(response);
+    return response;
+  }
+
   public register(user: TokenPayload): Observable<any> {
     return this.request('post', 'register', user);
   }
@@ -101,7 +149,19 @@ export class AuthenticationService {
   }
 
   public documents(): Observable<any> {
-    return this.request('get', 'documents');
+    return this.requestDocs('get', 'documents');
+  }
+
+  public addDocument(document: DocumentPayload): Observable<any> {
+    return this.requestDocs('post', 'adddoc', document);
+  }
+
+  public folders() : Observable<any> {
+    return this.requestFolder('get', 'folders');
+  }
+
+  public addFolder(folder: FolderPayload): Observable<any> {
+    return this.requestFolder('post', 'addfolder', folder);
   }
 
   public logout(): void {

@@ -15,6 +15,67 @@
       background-color: #dddddd;
     }
 </style>
+
+<ng-template #content let-modal> 
+    <div class="modal-header"> 
+        <h4 class="modal-title" 
+            id="modal-basic-title"> 
+            Add document
+        </h4> 
+        <button type="button" class="close"
+                aria-label="Close" (click)= 
+                "modal.dismiss('Cross click')"> 
+  
+            <span aria-hidden="true"> 
+                × 
+            </span> 
+        </button> 
+    </div> 
+    <div class="modal-body"> 
+        <label for="name"> 
+           File name
+        </label> 
+       <input type="text" [(ngModel)]="name"><br/>
+       <label for="data"> 
+          Content
+      </label> 
+       <input type="text" [(ngModel)]="data">
+    </div> 
+    <button type="button" 
+            class="btn btn-outline-dark" 
+            (click)="modal.close('Save click')"> 
+            Save 
+        </button> 
+</ng-template> 
+
+<ng-template #folder let-modal> 
+    <div class="modal-header"> 
+        <h4 class="modal-title" 
+            id="modal-basic-title"> 
+            Add folder
+        </h4> 
+        <button type="button" class="close"
+                aria-label="Close" (click)= 
+                "modal.dismiss('Cross click')"> 
+  
+            <span aria-hidden="true"> 
+                × 
+            </span> 
+        </button> 
+    </div> 
+    <div class="modal-body"> 
+        <label for="name"> 
+           Folder name
+        </label> 
+       <input type="text" [(ngModel)]="folname"><br/>
+    </div> 
+    <button type="button" 
+            class="btn btn-outline-dark" 
+            (click)="modal.close('Save click')"> 
+            Save 
+        </button> 
+</ng-template> 
+  
 <div class="container">
     <div class="row">
       
@@ -24,8 +85,8 @@
   
         <section>
             <div class="button-row">
-              <button>Create Folder</button>
-              <button>Create File</button>
+              <button class="btn btn-lg btn-outline-primary" (click)="onFolCreate(folder)">Create Folder</button>
+              <button  class="btn btn-lg btn-outline-primary" (click)="onCreate(content)">Create File</button>
             </div>
         </section>
         <div>
@@ -33,22 +94,27 @@
                 <tr>
                   <th>Type</th>
                   <th>Name</th>
+                  <th>Content</th>
                   <th>Created</th>
                   <th>Operation</th>
                 </tr>
-                <tr>
-                  <td>Folder</td>
-                  <td>Movies</td>
-                  <td>Just now</td>
-                  <td>Move</td>
+                <tr *ngFor="let folder of folders">
+                    <td>Folder</td>
+                    <td><a [routerLink]="" (click)="showFilesInFolder($event)">{{folder?.name}}</a></td>
+                    <td>...</td>
+                    <td>{{folder?.created}}</td>
+                    <td></td>
                 </tr>
-                <tr>
-                    <td>File</td>
-                    <td>pop</td>
-                    <td>2 days back</td>
+                <tr *ngFor="let document of documents">
+                    <td>FIle</td>
+                    <td>{{document?.name}}</td>
+                    <td>{{document?.content}}</td>
+                    <td>{{document?.created}}</td>
                     <td>Move</td>
-                  </tr>
+                </tr>
               </table>
+
+              
         </div>
   
       </div>

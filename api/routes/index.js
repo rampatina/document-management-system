@@ -7,12 +7,18 @@ var auth = jwt({
 });
 
 var ctrlData = require('../controllers/documents');
+var ctrlFolder = require('../controllers/folders');
 var ctrlProfile = require('../controllers/profile');
 var ctrlAuth = require('../controllers/authentication');
 
 // profile
 router.get('/profile', auth, ctrlProfile.profileRead);
 router.get('/documents', auth, ctrlData.documentsRead);
+router.post('/adddoc', auth, ctrlData.documentAdd);
+//router.post('/movedoc', auth, ctrlData.moveDocument);
+router.get('/folders', auth, ctrlFolder.foldersRead);
+router.post('/addfolder', auth, ctrlFolder.folderAdd);
+
 // authentication
 router.post('/register', ctrlAuth.register);
 router.post('/login', ctrlAuth.login);
