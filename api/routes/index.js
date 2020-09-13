@@ -14,10 +14,11 @@ var ctrlAuth = require('../controllers/authentication');
 // profile
 router.get('/profile', auth, ctrlProfile.profileRead);
 router.get('/documents', auth, ctrlData.documentsRead);
+router.get('/documents/:folderid', auth, ctrlData.getFilesInFolder);
 router.post('/adddoc', auth, ctrlData.documentAdd);
-//router.post('/movedoc', auth, ctrlData.moveDocument);
 router.get('/folders', auth, ctrlFolder.foldersRead);
 router.post('/addfolder', auth, ctrlFolder.folderAdd);
+router.post('/movedoc', auth, ctrlData.moveDocument);
 
 // authentication
 router.post('/register', ctrlAuth.register);

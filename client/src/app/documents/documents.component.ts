@@ -13,40 +13,41 @@ export class DocumentsComponent {
   data: String;
   save = {};
   folname: String;
+  targetfolder: String;
+  currentfile: String;
 
   constructor(private auth: AuthenticationService, private modalService: NgbModal) {}
   
   ngOnInit() {    
+    this.getRecords();
+  }
+
+  getRecords() {
     this.auth.documents().subscribe(document => {
-      console.log('document ' + document);
       this.documents = document;
     }, (err) => {
       console.error(err);
     });
 
     this.auth.folders().subscribe(folders => {
-      console.log('folders ' + folders);
       this.folders = folders;
     }, (err) => {
       console.error(err);
     });
   }
-
   onCreate(content:any) { 
     this.modalService.open(content).result.then((result) => { 
-      console.log('content ', this.data);
-      console.log('name ', this.name);
       var payload  = {
         name: this.name,
         content: this.data,
         userid: this.auth.getUserDetails()._id
       }
-      console.log(payload);
       this.auth.addDocument(payload).subscribe(save => {
         this.save = save;
       }, (err) => {
         console.error(err);
       });
+      this.getRecords();
       this.closeResult = `Closed with: ${result}`; 
     }, (reason) => { 
       this.closeResult =  
@@ -56,7 +57,6 @@ export class DocumentsComponent {
 
   onFolCreate(folder:any) { 
     this.modalService.open(folder).result.then((result) => { 
-      console.log('name ', this.folname);
       var payload  = {
         name: this.folname,
         userid: this.auth.getUserDetails()._id
@@ -67,13 +67,37 @@ export class DocumentsComponent {
       }, (err) => {
         console.error(err);
       });
+      this.getRecords();
       this.closeResult = `Closed with: ${result}`; 
     }, (reason) => { 
       this.closeResult =  
          `Dismissed ${this.getDismissReason(reason)}`; 
     }); 
   } 
+
+  onMove(move: any) {
+    this.modalService.open(move).result.then((result) => { 
+      var payload  = {
+        targetfoldeid: this.targetfolder,
+        fileid: this.currentfile
+      }
+      this.auth.moveDocument(payload).subscribe(save => {
+        this.save = save;
+      }, (err) => {
+        console.error(err);
+      });
+      this.getRecords();
+      this.closeResult = `Closed with: ${result}`; 
+    }, (reason) => { 
+      this.closeResult =  
+         `Dismissed ${this.getDismissReason(reason)}`; 
+    }); 
+  }
   
+  getCurrentFile(event: any) {
+    this.currentfile = event.target.id;
+  }
+
   private getDismissReason(reason: any): string { 
     if (reason === ModalDismissReasons.ESC) { 
       return 'by pressing ESC'; 
@@ -85,6 +109,11 @@ export class DocumentsComponent {
   } 
 
   showFilesInFolder(event:any) {
-    console.log(event);
+    this.folders = null;
+    this.auth.getDocsInFolder(event.target.id).subscribe(document => {
+      this.documents = document;
+    }, (err) => {
+      console.error(err);
+    });
   }
 }

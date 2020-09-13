@@ -110,7 +110,7 @@ export class AuthenticationService {
     return request;
   }
 
-  private requestDocs(method: 'post'|'get', type: 'documents' | 'adddoc', document?: DocumentPayload): Observable<any> {
+  private requestDocs(method: 'post'|'get', type: any, document?: DocumentPayload): Observable<any> {
     let response;
     console.log('requestDocs called' + method + 'type ' + type);
     console.log(document);
@@ -123,7 +123,7 @@ export class AuthenticationService {
     return response;
   }
 
-  private requestFolder(method: 'post'|'get', type: 'folders' | 'addfolder', folder?: FolderPayload): Observable<any> {
+  private requestFolder(method: 'post'|'get', type: any, folder?: FolderPayload): Observable<any> {
     let response;
     console.log('requestDocs called' + method + ' type ' + type);
     console.log(folder);
@@ -152,8 +152,16 @@ export class AuthenticationService {
     return this.requestDocs('get', 'documents');
   }
 
+  public getDocsInFolder(folderid: any): Observable<any> {
+    return this.requestDocs('get', 'documents/'+folderid);
+  }
+
   public addDocument(document: DocumentPayload): Observable<any> {
     return this.requestDocs('post', 'adddoc', document);
+  }
+
+  public moveDocument(document: any) : Observable<any> {
+    return this.requestDocs('post', 'movedoc', document);
   }
 
   public folders() : Observable<any> {
