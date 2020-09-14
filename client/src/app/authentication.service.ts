@@ -112,8 +112,7 @@ export class AuthenticationService {
 
   private requestDocs(method: 'post'|'get', type: any, document?: DocumentPayload): Observable<any> {
     let response;
-    console.log('requestDocs called' + method + 'type ' + type);
-    console.log(document);
+    console.log('requestDocs called ' + method + 'type ' + type);
     if (method === 'post') {
       response = this.http.post(`/api/${type}`, document, { headers: { Authorization: `Bearer ${this.getToken()}`, 'Content-Type': 'application/json' }});
     } else {
@@ -125,8 +124,7 @@ export class AuthenticationService {
 
   private requestFolder(method: 'post'|'get', type: any, folder?: FolderPayload): Observable<any> {
     let response;
-    console.log('requestDocs called' + method + ' type ' + type);
-    console.log(folder);
+    console.log('requestDocs called ' + method + ' type ' + type);
     if (method === 'post') {
       response = this.http.post(`/api/${type}`, folder, { headers: { Authorization: `Bearer ${this.getToken()}`, 'Content-Type': 'application/json' }});
     } else {

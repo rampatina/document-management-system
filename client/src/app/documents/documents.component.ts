@@ -35,6 +35,7 @@ export class DocumentsComponent {
       console.error(err);
     });
   }
+  
   onCreate(content:any) { 
     this.modalService.open(content).result.then((result) => { 
       var payload  = {

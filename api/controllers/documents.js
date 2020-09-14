@@ -27,6 +27,9 @@ module.exports.getFilesInFolder = function(req, res) {
     Document
       .find({folderid: req.params.folderid})
       .exec(function(err, document) {
+        if (err) {
+          console.log('problen in retrieving docs');
+        }
         res.status(200).json(document);
       });
   }
@@ -46,7 +49,6 @@ module.exports.documentAdd = function(req, res) {
         if (err) {
           console.log('problen in insert');
         }
-        console.log('Reached exec');
         res.status(200).json(document);
       });
   }
@@ -65,7 +67,6 @@ module.exports.moveDocument = function(req, res) {
         if (err) {
           console.log('problen in insert');
         }
-        console.log('Reached exec');
         res.status(200).json(document);
       });
   }
