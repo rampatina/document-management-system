@@ -1,11 +1,17 @@
 var mongoose = require('mongoose');
 var gracefulShutdown;
-var dbURI = 'mongodb://127.0.0.1:27017/?compressors=disabled&gssapiServiceName=mongodb';
+var dbURI = 'mongodb://mongo:27017/dmsdb';
+var options = {
+  useMongoClient: true,
+  socketTimeoutMS: 0,
+  keepAlive: true,
+  reconnectTries: 30
+};
 if (process.env.NODE_ENV === 'production') {
   dbURI = process.env.MONGOLAB_URI;
 }
 
-mongoose.connect(dbURI);
+mongoose.connect(dbURI, options);
 
 // CONNECTION EVENTS
 mongoose.connection.on('connected', function() {

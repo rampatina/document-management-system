@@ -1,8 +1,18 @@
 # document-management-system
 
-Dockerized the MEAN app, but have some issues with Angular dependencies to load app.
+***To Deploy with docker***
+Dockerized the DMS app, here is the steps to run it.
+* Clone the repo
+* Run the docker compose
+  * If VS code already installed in your system then just open the repo and right click on 'docker-compose.yml' and click 'Compose Up'(OR)
+  * Open terminal in the repo and execute 'docker-compose -f "docker-compose.yml" up -d --build'
+* Open http://localhost:4200 to see the application
+* Signup/Login to the app and verify.
 
-*To run locally*, you just have MongoDB installed and running, and NodeJS installed.
+
+***To run locally***
+
+You just have MongoDB installed and running, and NodeJS installed.
 
 * Start MongoDB
 * Connect to mongo and create two collections

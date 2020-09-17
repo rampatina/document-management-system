@@ -53,6 +53,7 @@ export interface FolderPayload {
 @Injectable()
 export class AuthenticationService {
   private token: string;
+  API = 'http://localhost:3000';
 
   constructor(private http: HttpClient, private router: Router) {}
 
@@ -93,9 +94,9 @@ export class AuthenticationService {
     let base;
 
     if (method === 'post') {
-      base = this.http.post(`/api/${type}`, user);
+      base = this.http.post(`${this.API}/api/${type}`, user);
     } else {
-      base = this.http.get(`/api/${type}`, { headers: { Authorization: `Bearer ${this.getToken()}` }});
+      base = this.http.get(`${this.API}/api/${type}`, { headers: { Authorization: `Bearer ${this.getToken()}` }});
     }
 
     const request = base.pipe(
@@ -114,9 +115,9 @@ export class AuthenticationService {
     let response;
     console.log('requestDocs called ' + method + 'type ' + type);
     if (method === 'post') {
-      response = this.http.post(`/api/${type}`, document, { headers: { Authorization: `Bearer ${this.getToken()}`, 'Content-Type': 'application/json' }});
+      response = this.http.post(`${this.API}/api/${type}`, document, { headers: { Authorization: `Bearer ${this.getToken()}`, 'Content-Type': 'application/json' }});
     } else {
-      response = this.http.get(`/api/${type}`, { headers: { Authorization: `Bearer ${this.getToken()}` }});
+      response = this.http.get(`${this.API}/api/${type}`, { headers: { Authorization: `Bearer ${this.getToken()}` }});
     }
     //console.log(response);
     return response;
@@ -126,9 +127,9 @@ export class AuthenticationService {
     let response;
     console.log('requestDocs called ' + method + ' type ' + type);
     if (method === 'post') {
-      response = this.http.post(`/api/${type}`, folder, { headers: { Authorization: `Bearer ${this.getToken()}`, 'Content-Type': 'application/json' }});
+      response = this.http.post(`${this.API}/api/${type}`, folder, { headers: { Authorization: `Bearer ${this.getToken()}`, 'Content-Type': 'application/json' }});
     } else {
-      response = this.http.get(`/api/${type}`, { headers: { Authorization: `Bearer ${this.getToken()}` }});
+      response = this.http.get(`${this.API}/api/${type}`, { headers: { Authorization: `Bearer ${this.getToken()}` }});
     }
     //console.log(response);
     return response;
